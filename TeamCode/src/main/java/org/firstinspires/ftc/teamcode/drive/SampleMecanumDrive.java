@@ -26,6 +26,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -74,8 +75,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private TrajectoryFollower follower;
 
+    // drive motors
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+
+    //claw/lift
     private DcMotorEx frontLift;
+//    private Servo rightHand;
+//    private Servo leftHand;
+
+
     private List<DcMotorEx> motors;
     private List<DcMotorEx> lift;
 
@@ -122,7 +130,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         // and the placement of the dot/orientation from https://docs.revrobotics.com/rev-control-system/control-system-overview/dimensions#imu-location
         //
         // For example, if +Y in this diagram faces downwards, you would use AxisDirection.NEG_Y.
-        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_X);
+        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_Y);
 
         leftFront = hardwareMap.get(DcMotorEx.class, "left_front");
         leftRear = hardwareMap.get(DcMotorEx.class, "left_back");
@@ -131,6 +139,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         // lift
         frontLift = hardwareMap.get(DcMotorEx.class, "lift");
+
+        //claw
+//        rightHand = hardwareMap.get(Servo.class, "right_hand");
+//        leftHand = hardwareMap.get(Servo.class, "left_hand");
 
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront, frontLift);
@@ -278,8 +290,40 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
 
     public void runLift(double v){
-        telemetry.addLine("Running Lift");
         frontLift.setPower(v);
+    }
+
+    public void moveServo(double v){
+//        rightHand.setPosition(v);
+        //leftHand.setPosition(v);
+    }
+
+    public void mecanumPower(double x, double y, double rx) {
+        double powerFrontLeft = y + x + rx;
+        double powerFrontRight = y - x - rx;
+        double powerBackLeft = y - x + rx;
+        double powerBackRight = y + x - rx;
+
+        if (Math.abs(powerFrontLeft) > 1 || Math.abs(powerBackLeft) > 1 ||
+                Math.abs(powerFrontRight) > 1 || Math.abs(powerBackRight) > 1) {
+            // Find the largest power
+            double max;
+            max = Math.max(Math.abs(powerFrontLeft), Math.abs(powerBackLeft));
+            max = Math.max(Math.abs(powerFrontRight), max);
+            max = Math.max(Math.abs(powerBackRight), max);
+
+            // Divide everything by max (it's positive so we don't need to worry
+            // about signs)
+            powerFrontLeft /= max;
+            powerBackLeft /= max;
+            powerFrontRight /= max;
+            powerBackRight /= max;
+        }
+
+        leftFront.setPower(powerFrontLeft);
+        rightFront.setPower(powerFrontRight);
+        leftRear.setPower(powerBackLeft);
+        rightRear.setPower(powerBackRight);
     }
 
     @NonNull

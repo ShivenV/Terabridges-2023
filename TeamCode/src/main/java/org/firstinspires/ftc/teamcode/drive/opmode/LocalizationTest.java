@@ -17,18 +17,17 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @TeleOp(group = "drive")
 public class LocalizationTest extends LinearOpMode {
-    public static double MOTOR_POWER = 3;
-    private DcMotorEx frontLift;
 
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        frontLift = hardwareMap.get(DcMotorEx.class, "lift");
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
 
         while (!isStopRequested()) {
+
+            // using roadrunner to move robot around
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y,
@@ -40,18 +39,11 @@ public class LocalizationTest extends LinearOpMode {
             drive.update();
 
             Pose2d poseEstimate = drive.getPoseEstimate();
+
             telemetry.addData("x", poseEstimate.getX());
             telemetry.addData("y", poseEstimate.getY());
             telemetry.addData("heading", poseEstimate.getHeading());
             telemetry.update();
-            if(gamepad1.x) {
-                frontLift.setPower(MOTOR_POWER);
-                frontLift.setPower(0);
-            }
-            if(gamepad1.y) {
-                frontLift.setPower(-MOTOR_POWER);
-                frontLift.setPower(0);
-            }
         }
     }
 }

@@ -63,35 +63,35 @@ public class VisionTest extends LinearOpMode {
 
         waitForStart();
 
-//        switch (sleeveDetection.getPosition()){
-//            case LEFT:
-//            {
-//                leftFront.setPower(0.5);
-//                rightFront.setPower(0.5);
-//                leftBack.setPower(0.5);
-//                rightBack.setPower(0.5);
-//                sleep(65);
-//                break;
-//            }
-//            case CENTER:
-//            {
-//                leftFront.setPower(-0.5);
-//                rightFront.setPower(-0.5);
-//                leftBack.setPower(-0.5);
-//                rightBack.setPower(-0.5);
-//                sleep(65);
-//                break;
-//            }
-//            case RIGHT:
-//            {
-//                leftFront.setPower(0.5);
-//                rightFront.setPower(-0.5);
-//                leftBack.setPower(0.5);
-//                rightBack.setPower(-0.5);
-//                sleep(65);
-//                break;
-//            }
-//        }
+        switch (sleeveDetection.getPosition()){
+            case LEFT:
+            {
+                leftFront.setPower(0.5);
+                rightFront.setPower(0.5);
+                leftBack.setPower(0.5);
+                rightBack.setPower(0.5);
+                sleep(65);
+                break;
+            }
+            case CENTER:
+            {
+                leftFront.setPower(-0.5);
+                rightFront.setPower(-0.5);
+                leftBack.setPower(-0.5);
+                rightBack.setPower(-0.5);
+                sleep(65);
+                break;
+            }
+            case RIGHT:
+            {
+                leftFront.setPower(0.5);
+                rightFront.setPower(-0.5);
+                leftBack.setPower(0.5);
+                rightBack.setPower(-0.5);
+                sleep(65);
+                break;
+            }
+        }
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
         while (opModeIsActive())
         {
