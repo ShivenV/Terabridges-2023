@@ -17,7 +17,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
-@Autonomous(name = "Autonomous + Cone Detection")
+@Autonomous(name = "Autonomous thingyyyasdf")
 public class TestingAutonomous extends LinearOpMode {
     public static double MOTOR_POWER = 3;
     public static double RIGHT_START = 0.54;

@@ -43,22 +43,22 @@ public class PowerPlayAutonomous extends LinearOpMode {
         frontLift = hardwareMap.get(DcMotorEx.class, "lift");
         leftHand = hardwareMap.get(Servo.class, "left_hand");
         rightHand = hardwareMap.get(Servo.class, "right_hand");
-        //inital position
-        drive.setPoseEstimate(new Pose2d(-40, 60, Math.toRadians(-90.0)));
-
-        Trajectory leftPark = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(-22.0, 60.0), 0)
-                .splineTo(new Vector2d(-12.0, 45.0), -1.5707963267948966)
-                .build();
-
-        Trajectory centerPark = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(-35.0, 36.0), 0)
-                .build();
-
-        Trajectory rightPark = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(-60, 60), 0)
-                .splineTo(new Vector2d(-60, 40), 0)
-                .build();
+//        //inital position
+//        drive.setPoseEstimate(new Pose2d(-40, 60, Math.toRadians(-90.0)));
+//
+//        Trajectory leftPark = drive.trajectoryBuilder(new Pose2d())
+//                .splineTo(new Vector2d(-22.0, 60.0), 0)
+//                .splineTo(new Vector2d(-12.0, 45.0), -1.5707963267948966)
+//                .build();
+//
+//        Trajectory centerPark = drive.trajectoryBuilder(new Pose2d())
+//                .splineTo(new Vector2d(-35.0, 36.0), 0)
+//                .build();
+//
+//        Trajectory rightPark = drive.trajectoryBuilder(new Pose2d())
+//                .splineTo(new Vector2d(-60, 60), 0)
+//                .splineTo(new Vector2d(-60, 40), 0)
+//                .build();
 
 
         FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -94,42 +94,31 @@ public class PowerPlayAutonomous extends LinearOpMode {
         switch (sleeveDetection.getPosition()){
             case LEFT:
             {
-                drive.followTrajectory(leftPark);
-
-                Pose2d poseEstimate = drive.getPoseEstimate();
-                telemetry.addData("finalX", poseEstimate.getX());
-                telemetry.addData("finalY", poseEstimate.getY());
-                telemetry.addData("finalHeading", poseEstimate.getHeading());
-                telemetry.update();
+                drive.mecanumPower(0, 1, 0);
+                sleep(700);
+                drive.mecanumPower(1, 0, 0);
+                sleep(700);
             }
             case CENTER:
             {
-                drive.followTrajectory(centerPark);
-
-                Pose2d poseEstimate = drive.getPoseEstimate();
-                telemetry.addData("finalX", poseEstimate.getX());
-                telemetry.addData("finalY", poseEstimate.getY());
-                telemetry.addData("finalHeading", poseEstimate.getHeading());
-                telemetry.update();
+                drive.mecanumPower(1, 0, 0);
+                sleep(700);
             }
             case RIGHT:
             {
-                drive.followTrajectory(rightPark);
-
-                Pose2d poseEstimate = drive.getPoseEstimate();
-                telemetry.addData("finalX", poseEstimate.getX());
-                telemetry.addData("finalY", poseEstimate.getY());
-                telemetry.addData("finalHeading", poseEstimate.getHeading());
-                telemetry.update();
+                drive.mecanumPower(0, -1, 0);
+                sleep(700);
+                drive.mecanumPower(1, 0, 0);
+                sleep(700);
             }
         }
-        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
-        while (opModeIsActive())
-        {
-            dashboardTelemetry.addData("ROTATION: ", sleeveDetection.getPosition());
-            dashboardTelemetry.update();
-            // Don't burn CPU cycles busy-looping in this sample
-            sleep(50);
-        }
+//        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
+//        while (opModeIsActive())
+//        {
+//            dashboardTelemetry.addData("ROTATION: ", sleeveDetection.getPosition());
+//            dashboardTelemetry.update();
+//            // Don't burn CPU cycles busy-looping in this sample
+//            sleep(50);
+//        }
     }
 }
