@@ -17,7 +17,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
-@Autonomous(name = "Autonomous + Cone Detection")
+@Autonomous(name = "PowerPlayAutonomous")
 public class PowerPlayAutonomous extends LinearOpMode {
     public static double MOTOR_POWER = 3;
     public static double RIGHT_START = 0.54;
@@ -43,7 +43,11 @@ public class PowerPlayAutonomous extends LinearOpMode {
         frontLift = hardwareMap.get(DcMotorEx.class, "lift");
         leftHand = hardwareMap.get(Servo.class, "left_hand");
         rightHand = hardwareMap.get(Servo.class, "right_hand");
+<<<<<<< Updated upstream
 //        //inital position
+=======
+        //inital position
+>>>>>>> Stashed changes
 //        drive.setPoseEstimate(new Pose2d(-40, 60, Math.toRadians(-90.0)));
 //
 //        Trajectory leftPark = drive.trajectoryBuilder(new Pose2d())
@@ -66,7 +70,7 @@ public class PowerPlayAutonomous extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         sleeveDetection = new SleeveDetection();
-        FtcDashboard.getInstance().startCameraStream(camera, 0);
+        FtcDashboard.getInstance().startCameraStream(camera, 30);
         camera.setPipeline(sleeveDetection);
 
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -91,9 +95,15 @@ public class PowerPlayAutonomous extends LinearOpMode {
 
         waitForStart();
 
+        drive.mecanumPower(0, -0.2, 0);
+        sleep(300);
+        drive.mecanumPower(0, 0, 0);
+        sleep(500);
+
         switch (sleeveDetection.getPosition()){
             case LEFT:
             {
+<<<<<<< Updated upstream
                 drive.mecanumPower(0, 1, 0);
                 sleep(700);
                 drive.mecanumPower(1, 0, 0);
@@ -113,6 +123,33 @@ public class PowerPlayAutonomous extends LinearOpMode {
             }
         }
 //        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
+=======
+                drive.mecanumPower(0.3, 0, 0);
+                sleep(1550);
+                drive.mecanumPower(0, -0.5, 0);
+                sleep(500);
+                drive.mecanumPower(0 , 0, 0);
+                return;
+            }
+            case CENTER:
+            {
+                drive.mecanumPower(0 , -0.5, 0);
+                sleep(500);
+                drive.mecanumPower(0 , 0, 0);
+                return;
+            }
+            case RIGHT:
+            {
+                drive.mecanumPower(-0.3, 0, 0);
+                sleep(1550);
+                drive.mecanumPower(0, -0.5, 0);
+                sleep(500);
+                drive.mecanumPower(0 , 0, 0);
+                return;
+            }
+        }
+        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
+>>>>>>> Stashed changes
 //        while (opModeIsActive())
 //        {
 //            dashboardTelemetry.addData("ROTATION: ", sleeveDetection.getPosition());
