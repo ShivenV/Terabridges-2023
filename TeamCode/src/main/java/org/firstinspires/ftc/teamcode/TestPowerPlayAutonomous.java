@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -15,6 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
 @Autonomous(name = "TestPowerPlayAutonomous")
+@Config
 public class TestPowerPlayAutonomous extends LinearOpMode {
     public static double MOTOR_POWER = 3;
     public static double RIGHT_START = 0.54;

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -18,6 +19,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
 @Autonomous(name = "PowerPlayAutonomous")
+@Config
 public class PowerPlayAutonomous extends LinearOpMode {
     public static double MOTOR_POWER = 3;
     public static double RIGHT_START = 0.54;
@@ -28,6 +30,9 @@ public class PowerPlayAutonomous extends LinearOpMode {
     private Servo leftHand;
     private Servo rightHand;
 
+    public static int caseToTest = 1;
+    public static int sideTime = 2250;
+    public static int forwardTime = 1500;
 
     SleeveDetection sleeveDetection;
     OpenCvCamera camera;
@@ -43,11 +48,7 @@ public class PowerPlayAutonomous extends LinearOpMode {
         frontLift = hardwareMap.get(DcMotorEx.class, "lift");
         leftHand = hardwareMap.get(Servo.class, "left_hand");
         rightHand = hardwareMap.get(Servo.class, "right_hand");
-//<<<<<<< Updated upstream
 //        //inital position
-//=======
-        //inital position
-//>>>>>>> Stashed changes
 //        drive.setPoseEstimate(new Pose2d(-40, 60, Math.toRadians(-90.0)));
 //
 //        Trajectory leftPark = drive.trajectoryBuilder(new Pose2d())
@@ -95,34 +96,29 @@ public class PowerPlayAutonomous extends LinearOpMode {
 
         waitForStart();
 
-        drive.mecanumPower(0, -0.2, 0);
-        sleep(300);
-        drive.mecanumPower(0, 0, 0);
-        sleep(500);
-
         switch (sleeveDetection.getPosition()){
             case LEFT:
             {
-                drive.mecanumPower(0.3, 0, 0);
-                sleep(1550);
-                drive.mecanumPower(0, -0.5, 0);
-                sleep(500);
+                drive.mecanumPower(-0.25, 0, 0);
+                sleep(sideTime);
+                drive.mecanumPower(0, 0.25, 0);
+                sleep(forwardTime);
                 drive.mecanumPower(0 , 0, 0);
                 return;
             }
             case CENTER:
             {
-                drive.mecanumPower(0 , -0.5, 0);
-                sleep(500);
+                drive.mecanumPower(0 , 0.25, 0);
+                sleep(forwardTime);
                 drive.mecanumPower(0 , 0, 0);
                 return;
             }
             case RIGHT:
             {
-                drive.mecanumPower(-0.3, 0, 0);
-                sleep(1550);
-                drive.mecanumPower(0, -0.5, 0);
-                sleep(500);
+                drive.mecanumPower(0.25, 0, 0);
+                sleep(sideTime);
+                drive.mecanumPower(0, 0.25, 0);
+                sleep(forwardTime);
                 drive.mecanumPower(0 , 0, 0);
                 return;
             }
