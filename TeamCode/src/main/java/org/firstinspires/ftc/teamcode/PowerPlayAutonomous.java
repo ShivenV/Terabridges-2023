@@ -43,11 +43,11 @@ public class PowerPlayAutonomous extends LinearOpMode {
         frontLift = hardwareMap.get(DcMotorEx.class, "lift");
         leftHand = hardwareMap.get(Servo.class, "left_hand");
         rightHand = hardwareMap.get(Servo.class, "right_hand");
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
 //        //inital position
-=======
+//=======
         //inital position
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 //        drive.setPoseEstimate(new Pose2d(-40, 60, Math.toRadians(-90.0)));
 //
 //        Trajectory leftPark = drive.trajectoryBuilder(new Pose2d())
@@ -103,27 +103,6 @@ public class PowerPlayAutonomous extends LinearOpMode {
         switch (sleeveDetection.getPosition()){
             case LEFT:
             {
-<<<<<<< Updated upstream
-                drive.mecanumPower(0, 1, 0);
-                sleep(700);
-                drive.mecanumPower(1, 0, 0);
-                sleep(700);
-            }
-            case CENTER:
-            {
-                drive.mecanumPower(1, 0, 0);
-                sleep(700);
-            }
-            case RIGHT:
-            {
-                drive.mecanumPower(0, -1, 0);
-                sleep(700);
-                drive.mecanumPower(1, 0, 0);
-                sleep(700);
-            }
-        }
-//        /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
-=======
                 drive.mecanumPower(0.3, 0, 0);
                 sleep(1550);
                 drive.mecanumPower(0, -0.5, 0);
@@ -149,7 +128,7 @@ public class PowerPlayAutonomous extends LinearOpMode {
             }
         }
         /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 //        while (opModeIsActive())
 //        {
 //            dashboardTelemetry.addData("ROTATION: ", sleeveDetection.getPosition());
