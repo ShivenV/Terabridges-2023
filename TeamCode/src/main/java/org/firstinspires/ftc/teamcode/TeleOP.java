@@ -60,14 +60,21 @@ public class TeleOP extends OpMode
     private DcMotor rightBack = null;
     private DcMotor leftFront = null;
     private DcMotor rightFront = null;
-    private DcMotor wheel = null;
-    private DcMotor arm = null;
+    private DcMotor lift = null;
     private Servo hand = null;
-    double wheelSpeed = 0;
+
+
 
 //    double[] speeds = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1};
     double[] speeds = {0.5, 1};
     int currentSpeed = 0;
+
+    boolean xPressed = false;
+    double armPow = 0;
+
+    boolean aPressed = false;
+    double powerMultiplier = 0.0;
+    double rotationMultiplier = 0.5;
 
     double leftBackInitial;
     double rightBackInitial;
@@ -88,8 +95,7 @@ public class TeleOP extends OpMode
         rightBack = hardwareMap.get(DcMotor.class, "right_back");
         leftFront  = hardwareMap.get(DcMotor.class, "left_front");
         rightFront = hardwareMap.get(DcMotor.class, "right_front");
-        wheel = hardwareMap.get(DcMotor.class, "wheel");
-        arm = hardwareMap.get(DcMotor.class, "arm");
+        lift = hardwareMap.get(DcMotor.class, "lift");
         hand = hardwareMap.get(Servo.class, "hand");
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -122,15 +128,12 @@ public class TeleOP extends OpMode
     public void start() {
         runtime.reset();
     }
-    boolean aPressed = false;
-    double powerMultiplier = 0.0;
-    double rotationMultiplier = 0.5;
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
     public void loop() {
-        // Setup a variable for each drive wheel to save power level for telemetry
+        // Set up a variable for each drive wheel to save power level for telemetry
         double leftBackPower;
         double rightBackPower;
         double leftFrontPower;
@@ -162,20 +165,14 @@ public class TeleOP extends OpMode
         leftFront.setPower(leftFrontPower);
         rightFront.setPower(rightFrontPower);
 
-        if (gamepad1.a) {
-            arm.setPower(1);
-        } else if (gamepad1.y) {
-            arm.setPower(-1);
-        } else {
-            arm.setPower(0);
-        }
+
+
+
         if (gamepad1.left_bumper) {
             hand.setPosition(0.5);
         } else if (gamepad1.right_bumper) {
             hand.setPosition(0);
         }
-        wheelSpeed = 0;
-        wheel.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
 
         if(gamepad1.b) {
             if (!aPressed) {
@@ -187,7 +184,21 @@ public class TeleOP extends OpMode
         }else{
             aPressed = false;
         }
+
+
         if(gamepad1.x) {
+            if (!xPressed) {
+                currentSpeed++;
+
+                armPow = -armPow + 1;
+            }
+            xPressed = true;
+        }else{
+            xPressed = false;
+        }
+        lift.setPower(armPow);
+
+        if(gamepad1.y) {
             leftBackInitial = leftBack.getCurrentPosition();
             rightBackInitial = rightBack.getCurrentPosition();
             leftFrontInitial = leftFront.getCurrentPosition();

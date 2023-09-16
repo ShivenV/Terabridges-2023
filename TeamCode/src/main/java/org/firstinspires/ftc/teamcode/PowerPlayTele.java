@@ -30,11 +30,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -65,6 +63,9 @@ public class PowerPlayTele extends OpMode
     private DcMotor lift = null;
     private Servo rightHand = null;
     private Servo leftHand = null;
+
+    boolean xPressed = false;
+    double liftPow = 0;
 
     //    double[] speeds = {0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 1};
     double[] speeds = {0.5, 1};
@@ -126,7 +127,7 @@ public class PowerPlayTele extends OpMode
     public void start() {
         runtime.reset();
     }
-    boolean aPressed = false;
+    boolean bPressed = false;
     double powerMultiplier = 0.0;
     double rotationMultiplier = 0.5;
     /*
@@ -148,31 +149,38 @@ public class PowerPlayTele extends OpMode
         rightFrontPower    = Range.clip((forward - side + rotation), -1.0, 1.0);
         leftFrontPower   = Range.clip((forward + side - rotation), -1.0, 1.0);
 
-        if(gamepad1.dpad_up){
-            leftFrontPower = powerMultiplier;
-        }
-        if(gamepad1.dpad_down){
-            leftBackPower = powerMultiplier;
-        }
-        if(gamepad1.dpad_left){
-            rightFrontPower = powerMultiplier;
-        }
-        if(gamepad1.dpad_right){
-            rightBackPower = powerMultiplier;
-        }
+//        if(gamepad1.dpad_up){
+//            leftFrontPower = powerMultiplier;
+//        }
+//        if(gamepad1.dpad_down){
+//            leftBackPower = powerMultiplier;
+//        }
+//        if(gamepad1.dpad_left){
+//            rightFrontPower = powerMultiplier;
+//        }
+//        if(gamepad1.dpad_right){
+//            rightBackPower = powerMultiplier;
+//        }
 
         leftBack.setPower(leftBackPower);
         rightBack.setPower(rightBackPower);
         leftFront.setPower(leftFrontPower);
         rightFront.setPower(rightFrontPower);
 
-        if (gamepad1.a) {
-            lift.setPower(1);
-        } else if (gamepad1.y) {
-            lift.setPower(-1);
-        } else {
-            lift.setPower(0);
+        if(gamepad1.x) {
+            liftPow = 1;
         }
+        if(gamepad1.y) {
+            liftPow = 0.1;
+        }
+        if(gamepad1.a) {
+            liftPow = -0.5;
+        }
+        if(gamepad1.dpad_down){
+            liftPow = 0;
+        }
+        lift.setPower(liftPow);
+
         if (gamepad1.left_bumper) {
             leftHand.setPosition(0.5);
             rightHand.setPosition(0.6);
@@ -192,21 +200,21 @@ public class PowerPlayTele extends OpMode
 //        rightHand.setPosition(rightHandPos);
 
         if(gamepad1.b) {
-            if (!aPressed) {
+            if (!bPressed) {
                 currentSpeed++;
                 if(currentSpeed == speeds.length)
                     currentSpeed = 0;
             }
-            aPressed = true;
+            bPressed = true;
         }else{
-            aPressed = false;
+            bPressed = false;
         }
-        if(gamepad1.x) {
-            leftBackInitial = leftBack.getCurrentPosition();
-            rightBackInitial = rightBack.getCurrentPosition();
-            leftFrontInitial = leftFront.getCurrentPosition();
-            rightFrontInitial = rightFront.getCurrentPosition();
-        }
+//        if(gamepad1.y) {
+//            leftBackInitial = leftBack.getCurrentPosition();
+//            rightBackInitial = rightBack.getCurrentPosition();
+//            leftFrontInitial = leftFront.getCurrentPosition();
+//            rightFrontInitial = rightFront.getCurrentPosition();
+//        }
         powerMultiplier = speeds[currentSpeed];
 
         telemetry.clear();
